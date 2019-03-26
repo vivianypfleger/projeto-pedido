@@ -7,10 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.senai.sc.domain.Categoria;
 import br.senai.sc.domain.Cidade;
+import br.senai.sc.domain.Cliente;
+import br.senai.sc.domain.Endereco;
 import br.senai.sc.domain.Estado;
 import br.senai.sc.domain.Produto;
+import br.senai.sc.domain.enums.TipoCliente;
 import br.senai.sc.repositories.CategoriaRepository;
 import br.senai.sc.repositories.CidadeRepository;
+import br.senai.sc.repositories.ClienteRepository;
+import br.senai.sc.repositories.EnderecoRepository;
 import br.senai.sc.repositories.EstadoRepository;
 import br.senai.sc.repositories.ProdutoRepository;
 
@@ -32,6 +37,13 @@ public class ProjetoPedidoApplication implements CommandLineRunner {
 	
 	@Autowired
 	private CidadeRepository RepoCidade;
+	
+	@Autowired
+	private EnderecoRepository RepoEndereco;
+	
+	@Autowired
+	private ClienteRepository RepoCliente;
+	
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -45,23 +57,49 @@ public class ProjetoPedidoApplication implements CommandLineRunner {
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
 		
-		Cidade c1 = new Cidade(null, "Uberlândia");
-		Cidade c2 = new Cidade(null, "São Paulo");
-		Cidade c3 = new Cidade(null, "Campinas");
+		Cidade c1 = new Cidade(null, "Uberlândia", est1);
+		Cidade c2 = new Cidade(null, "São Paulo", est2);
+		Cidade c3 = new Cidade(null, "Campinas",est2);
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", c2);
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAJURIDICA);
+				
 		
 		p1.getCategorias().add(cat1);
 		cat1.getProdutos().add(p1);
-
+				
+		est1.getCidades().add(c1);
+		est2.getCidades().add(c2);
+		est2.getCidades().add(c3);
+		
+		cli1.getEnderecos().add(e1);
+		cli1.getEnderecos().add(e2);
+		cli1.getTelefones().add("(48) 99999-8888");
+		cli1.getTelefones().add("(48) 99999-1111");
+		
 		RepoCat.save(cat1);
 		RepoCat.save(cat2);
+		
 		RepoProd.save(p1);
 		RepoProd.save(p2);
 		RepoProd.save(p3);
+		
 		RepoEsta.save(est1);
 		RepoEsta.save(est2);
+			
 		RepoCidade.save(c1);
 		RepoCidade.save(c2);
 		RepoCidade.save(c3);
+		
+		RepoCliente.save(cli1);
+		
+		RepoEndereco.save(e1);
+		RepoEndereco.save(e2);
+		
+		
+		
 
 	}
 
